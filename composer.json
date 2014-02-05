@@ -17,7 +17,7 @@
         "symfony/config" : ">=2.1,<2.4",
         "pagerfanta/pagerfanta": "dev-master",
         "twig/twig": "*",
-        "symfony/twig-bundle": "*",
+        "symfony/twig-bundle": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
