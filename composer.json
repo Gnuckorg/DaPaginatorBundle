@@ -2,8 +2,8 @@
     "name": "da/paginator-bundle",
     "type": "symfony-bundle",
     "description": "Symfony2's helper bundle for pagination",
-    "keywords": ["symfony", "helper", "pagination", "bundle"],
-    "homepage": "http://github.com/Gnuckorg/DaPaginationBundle",
+    "keywords": ["symfony", "helper", "pagination", "paginator", "bundle"],
+    "homepage": "http://github.com/Gnuckorg/DaPaginatorBundle",
     "license": "MIT",
     "authors": [
         {
@@ -20,8 +20,8 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "psr-0": { "Da\\PaginationBundle": "" }
+        "psr-0": { "Da\\PaginatorBundle": "" }
     },
     "minimum-stability": "dev",
-    "target-dir": "Da/PaginationBundle"
+    "target-dir": "Da/PaginatorBundle"
 }
