@@ -35,7 +35,7 @@ class Paginator implements PaginatorInterface
     private $views = array();
 
     /**
-     * The views for the paginated contents.
+     * The pagination views.
      *
      * @var array
      */
@@ -51,7 +51,7 @@ class Paginator implements PaginatorInterface
 	/**
      * {@inheritdoc}
      */
-    public function addPaginatedContent($id, $currentPage, $maxPerPage)
+    public function addPaginatedContent($id, $adapterId, $currentPage, $maxPerPage, $offset, )
     {
         $qb = $this->getEm()->createQueryBuilder();
         $qb->select('j')->from('JMSJobQueueBundle:Job', 'j')
@@ -65,21 +65,39 @@ class Paginator implements PaginatorInterface
         $pagerView = new TwitterBootstrapView();
 
         $router = $this->router;
-        $routeGenerator = function($page) use ($router, $pager) {
-            return $router->generate('jms_jobs_overview', array('page' => $page, 'per_page' => $pager->getMaxPerPage()));
+        $request = $this->container->get('request');
+        $route = $request->get('_route');
+        $parameters = array_merge($request->query->all(), $request->attributes->all());
+        $routeGenerator = function($page) use ($router, $route, $pager, $parameters) {
+            $parameters = array_merge(
+                $parameters,
+                array('page' => $page, 'per_page' => $pager->getMaxPerPage())
+            );
+            
+            return $router->generate($route, $parameters);
         };
 
         $this->contents[$id] = $pager;
-        $this->views[$id] = $pagerView;
+        $this->paginationViews[$id] = $pagerView;
         $this->routeGenerators[$id] = $routeGenerator;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addPaginatedContentView($contentId, $viewId)
+    public function addPaginatedContentView($contentId, $viewId, array $view)
     {
+        if (!isset($this->views[$contentId])) {
+            $this->views[$contentId] = array();
+        }
 
+        foreach ($view as $itemName => $itemTitle) {
+            if (!is_string($itemName) || !is_string($itemTitle)) {
+                throw new \InvalidArgumentException('The view must be an associative array of string values.');
+            }
+        }
+
+        $this->views[$contentId][$viewId] = $view;
     }
 
     /**
