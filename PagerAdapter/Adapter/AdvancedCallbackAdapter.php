@@ -1,6 +1,6 @@
 <?php
 
-namespace Da\PaginatorBundle\PagerAdapter;
+namespace Da\PaginatorBundle\PagerAdapter\Adapter;
 
 use Pagerfanta\Exception\InvalidArgumentException;
 use Pagerfanta\Adapter\AdapterInterface;

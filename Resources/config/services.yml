@@ -1,4 +1,14 @@
 parameters:
-
+    da_paginator.paginator.class: Da\PaginatorBundle\Pagination\Paginator
+    da_paginator.twig_extension.class: Da\PaginatorBundle\Pagination\TwigPaginationExtension
 
 services:
+    da_paginator.paginator:
+        class: %da_paginator.paginator.class%
+        arguments: [@router, @service_container]
+
+    da_paginator.twig_extension:
+        class: %da_paginator.twig_extension.class%
+        arguments: [@da_paginator.paginator]
+        tags:
+            - { name: twig.extension }

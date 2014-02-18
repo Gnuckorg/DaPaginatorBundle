@@ -1,0 +1,31 @@
+{% if content.haveToPaginate %}
+    {{ paginationView.render(content, routeGenerator)|raw }}
+{% endif %}
+
+<table class="table table-bordered table-striped table-condensed">
+    <thead>
+        <tr>
+        	{% for field in fields %}
+            	<th>{{ field }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in content %}
+        <tr>
+	        {% for fieldName, fieldTitle in fields %}
+            	<td>{{ item[fieldName] }}</td>
+            {% endfor %}
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="{{ fields|length }}">There is no data.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if content.haveToPaginate %}
+    {{ paginationView.render(content, routeGenerator)|raw }}
+{% endif %}

@@ -31,56 +31,9 @@ class TwigPaginationExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function initRuntime(\Twig_Environment $environment)
+    public function getName()
     {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTokenParsers()
-    {
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNodeVisitors()
-    {
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
-    {
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTests()
-    {
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
-    {
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOperators()
-    {
-        return array();
+        return 'da_paginator';
     }
 
     /**

@@ -13,5 +13,5 @@ interface PaginatorInterface
     /**
      * Add a paginated content.
      */
-    function addPaginatedContent();
+    //function addPaginatedContent();
 }

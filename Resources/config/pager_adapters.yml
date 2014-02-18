@@ -1,24 +1,31 @@
 services:
-    da_paginator.pager_adapter.advanced_callback:
-        class: Da\PaginatorBundle\PagerAdapter\AdvancedCallbackAdapter
+    # Providers.
+    da_paginator.pager_adapter_provider.advanced_callback:
+        class: Da\PaginatorBundle\PagerAdapter\Provider\AdvancedCallbackAdapterProvider
         arguments: []
         tags:
-            - { name: da_paginator.pager_adapter, id: advanced_callback }
+            - { name: da_paginator.pager_adapter_provider, id: advanced_callback }
 
-    da_paginator.pager_adapter.callback:
-        class: Pagerfanta\Adapter\CallbackAdapter
+    da_paginator.pager_adapter_provider.callback:
+        class: Da\PaginatorBundle\PagerAdapter\Provider\CallbackAdapterProvider
         arguments: []
         tags:
-            - { name: da_paginator.pager_adapter, id: callback }
+            - { name: da_paginator.pager_adapter_provider, id: callback }
 
-    da_paginator.pager_adapter.doctrine_orm:
-        class: Pagerfanta\Adapter\DoctrineORMAdapter
+    da_paginator.pager_adapter_provider.doctrine_orm:
+        class: Da\PaginatorBundle\PagerAdapter\Provider\DoctrineORMAdapterProvider
         arguments: []
         tags:
-            - { name: da_paginator.pager_adapter, id: doctrine_orm }
+            - { name: da_paginator.pager_adapter_provider, id: doctrine_orm }
 
-    da_paginator.pager_adapter.doctrine_mongodb:
-        class: Pagerfanta\Adapter\DoctrineODMMongoDBAdapter
+    da_paginator.pager_adapter_provider.doctrine_mongodb:
+        class: Da\PaginatorBundle\PagerAdapter\Provider\DoctrineODMMongoDBAdapterProvider
         arguments: []
         tags:
-            - { name: da_paginator.pager_adapter, id: doctrine_mongodb }
+            - { name: da_paginator.pager_adapter_provider, id: doctrine_mongodb }
+
+    da_paginator.pager_adapter_provider.array:
+        class: Da\PaginatorBundle\PagerAdapter\Provider\ArrayAdapterProvider
+        arguments: []
+        tags:
+            - { name: da_paginator.pager_adapter_provider, id: array }

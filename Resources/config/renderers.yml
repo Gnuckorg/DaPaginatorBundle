@@ -1,0 +1,7 @@
+services:
+    # Renderers.
+    da_paginator.renderer.bootstrap:
+        class: Da\PaginatorBundle\View\Renderer\TwitterBootstrapRenderer
+        arguments: [@templating]
+        tags:
+            - { name: da_paginator.renderer, id: bootstrap }
