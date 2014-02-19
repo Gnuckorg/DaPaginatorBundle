@@ -5,10 +5,11 @@ parameters:
 services:
     da_paginator.paginator:
         class: %da_paginator.paginator.class%
-        arguments: [@router, @service_container]
+        arguments: [@router, @request]
+        scope: request
 
     da_paginator.twig_extension:
         class: %da_paginator.twig_extension.class%
-        arguments: [@da_paginator.paginator]
+        arguments: [@service_container]
         tags:
             - { name: twig.extension }

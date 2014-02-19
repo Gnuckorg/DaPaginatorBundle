@@ -2,6 +2,8 @@
 
 namespace Da\PaginatorBundle\Pagination;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
  * TwigPaginationExtension is the Twig extention for the pagination.
  *
@@ -9,23 +11,33 @@ namespace Da\PaginatorBundle\Pagination;
  */
 class TwigPaginationExtension extends \Twig_Extension
 {
-	/**
-     * The paginator.
+    /**
+     * The dependency injection container.
      *
-     * @var PaginatorInterface
+     * @var ContainerInterface
      */
-    private $paginator;
+    private $container;
 
-	/**
+    /**
      * Constructor.
      *
-     * @param PaginatorInterface $paginator The paginator.
+     * @param ContainerInterface $container The dependency injection container.
      */
     public function __construct(
-        PaginatorInterface $paginator
+        ContainerInterface $container
     )
     {
-        $this->paginator = $paginator;
+        $this->container = $container;
+    }
+
+    /**
+     * Get the paginator.
+     *
+     * @return PaginatorInterface The paginator.
+     */
+    public function getPaginator()
+    {
+        return $this->container->get('da_paginator.paginator');
     }
 
     /**
@@ -41,6 +53,6 @@ class TwigPaginationExtension extends \Twig_Extension
      */
     public function getGlobals()
     {
-        return array('da' => array('paginator' => $this->paginator));
+        return array('da' => array('paginator' => $this->getPaginator()));
     }
 }

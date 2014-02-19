@@ -2,8 +2,8 @@
 
 namespace Da\PaginatorBundle\Pagination;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\request;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Da\PaginatorBundle\PagerAdapter\Provider\PagerAdapterProviderInterface;
@@ -59,25 +59,25 @@ class Paginator implements PaginatorInterface
     private $router;
 
     /**
-     * The dependency injection container.
+     * The request.
      *
-     * @var ContainerInterface
+     * @var Request
      */
-    private $container;
+    private $request;
 
     /**
      * Constructor.
      *
-     * @param RouterInterface    $router    The router.
-     * @param ContainerInterface $container The dependency injection container.
+     * @param RouterInterface $router  The router.
+     * @param Request         $request The request.
      */
     public function __construct(
         RouterInterface $router,
-        ContainerInterface $container
+        Request $request
     )
     {
         $this->router = $router;
-        $this->container = $container;
+        $this->request = $request;
     }
 
     /**
@@ -188,9 +188,8 @@ class Paginator implements PaginatorInterface
         $pager->setCurrentPage($currentPage);
 
         $router = $this->router;
-        $request = $this->container->get('request');
-        $route = $request->get('_route');
-        $parameters = $request->query->all();
+        $route = $this->request->get('_route');
+        $parameters = $this->request->query->all();
         $routeGenerator = function($page) use ($router, $route, $pager, $parameters, $currentPageLabel, $maxPerPageLabel) {
             $parameters = array_merge(
                 $parameters,
@@ -216,9 +215,8 @@ class Paginator implements PaginatorInterface
         $pager->setCurrentPage(floor($offset / $limit) + 1);
 
         $router = $this->router;
-        $request = $this->container->get('request');
-        $route = $request->get('_route');
-        $parameters = $request->query->all();
+        $route = $this->request->get('_route');
+        $parameters = $this->request->query->all();
         $routeGenerator = function($page) use ($router, $route, $pager, $parameters, $offsetLabel, $limitLabel) {
             $parameters = array_merge(
                 $parameters,
