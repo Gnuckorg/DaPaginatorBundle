@@ -1,0 +1,8 @@
+{% extends base.html.twig %}
+
+{% block table %}
+    <table class="table table-bordered table-striped table-condensed">
+        {% include 'thead.html.twig' with {'fields': fields} %}
+        {% include 'tbody.html.twig' with {'content': content, 'fields': fields} %}
+    </table>
+{% block table %}

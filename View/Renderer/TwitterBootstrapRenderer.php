@@ -12,10 +12,20 @@ use Pagerfanta\View\TwitterBootstrapView;
 class TwitterBootstrapRenderer extends AbstractRenderer
 {
     /**
+     * Get the template name.
+     *
+     * @return string The template name.
+     */
+    protected function getTemplateName()
+    {
+        return 'DaPaginatorBundle::bootstrap.html.twig';
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getPaginationView()
     {
-        return new TwitterBootstrapView();  
+        return new TwitterBootstrapView();
     }
 }

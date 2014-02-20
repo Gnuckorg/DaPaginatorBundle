@@ -17,6 +17,13 @@ use Da\PaginatorBundle\View\Renderer\RendererInterface;
 class Paginator implements PaginatorInterface
 {
     /**
+     * The pagers.
+     *
+     * @var array
+     */
+    private $pagers = array();
+
+    /**
      * The paginated contents.
      *
      * @var array
@@ -123,20 +130,41 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Get a paginated content.
+     * Get a pager.
      *
      * @param string $contentId The id of the content.
      */
-    protected function getContent($contentId)
+    protected function getPager($contentId)
     {
-        if (!isset($this->contents[$contentId])) {
+        if (!isset($this->pagers[$contentId])) {
             throw new \InvalidArgumentException(sprintf(
                 'The paginated content "%s" has not been defined.',
                 $contentId
             ));
         }
 
-        return $this->contents[$contentId];
+        return $this->pagers[$contentId];
+    }
+
+    /**
+     * Get a paginated content.
+     *
+     * @param string $contentId The id of the content.
+     */
+    protected function getContent($contentId, $viewId)
+    {
+        // Check the existence of the content.
+        $this->getPager($contentId);
+
+        if (!isset($this->contents[$contentId][$viewId])) {
+            throw new \InvalidArgumentException(sprintf(
+                'The view "%s" has not been defined for the paginated content "%s".',
+                $viewId,
+                $contentId
+            ));
+        }
+
+        return $this->contents[$contentId][$viewId];
     }
 
     /**
@@ -148,7 +176,7 @@ class Paginator implements PaginatorInterface
     public function getContentView($contentId, $viewId)
     {
         // Check the existence of the content.
-        $this->getContent($contentId);
+        $this->getPager($contentId);
 
         if (!isset($this->views[$contentId][$viewId])) {
             throw new \InvalidArgumentException(sprintf(
@@ -166,14 +194,14 @@ class Paginator implements PaginatorInterface
      *
      * @param string $contentId The id of the content.
      * @param string $viewId    The id of the view.
-     * @param array  $values    The values for the paginated content view.
+     * @param array  $content   The content.
      */
-    public function setContentView($contentId, $viewId, array $values)
+    public function setContent($contentId, $viewId, \ArrayAcces $content)
     {
         // Check the existence of the content view.
-        $this->getContentView($contentId, $viewId);
+        $this->getContent($contentId, $viewId);
 
-        $this->views[$contentId][$viewId] = $values;
+        $this->contents[$contentId][$viewId] = $content;
     }
 
 	/**
@@ -195,11 +223,11 @@ class Paginator implements PaginatorInterface
                 $parameters,
                 array($currentPageLabel => $page, $maxPerPageLabel => $pager->getMaxPerPage())
             );
-            
+
             return $router->generate($route, $parameters);
         };
 
-        $this->contents[$contentId] = $pager;
+        $this->pagers[$contentId] = $pager;
         $this->routeGenerators[$contentId] = $routeGenerator;
     }
 
@@ -222,11 +250,11 @@ class Paginator implements PaginatorInterface
                 $parameters,
                 array($offsetLabel => ($page - 1) * $pager->getMaxPerPage(), $limitLabel => $pager->getMaxPerPage())
             );
-            
+
             return $router->generate($route, $parameters);
         };
 
-        $this->contents[$contentId] = $pager;
+        $this->pagers[$contentId] = $pager;
         $this->routeGenerators[$contentId] = $routeGenerator;
     }
 
@@ -235,6 +263,11 @@ class Paginator implements PaginatorInterface
      */
     public function definePaginatedContentView($contentId, $viewId, array $fields)
     {
+        $pager = $this->getPager($contentId);
+
+        if (!isset($this->contents[$contentId])) {
+            $this->contents[$contentId] = array();
+        }
         if (!isset($this->views[$contentId])) {
             $this->views[$contentId] = array();
         }
@@ -245,6 +278,7 @@ class Paginator implements PaginatorInterface
             }
         }
 
+        $this->contents[$contentId][$viewId] = $pager->getIterator();
         $this->views[$contentId][$viewId] = $fields;
     }
 
@@ -271,9 +305,10 @@ class Paginator implements PaginatorInterface
     public function renderContentView($contentId, $viewId, $rendererId)
     {
         $renderer = $this->getRenderer($rendererId);
-        $content = $this->getContent($contentId);
+        $pager = $this->getPager($contentId);
+        $content = $this->getContent($contentId, $viewId);
         $fields = $this->getContentView($contentId, $viewId);
 
-        return $renderer->render($content, $this->routeGenerators[$contentId], $fields);
+        return $renderer->render($pager, $content, $this->routeGenerators[$contentId], $fields);
     }
 }

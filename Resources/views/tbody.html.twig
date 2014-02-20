@@ -1,0 +1,13 @@
+<tbody>
+    {% for item in content %}
+    <tr>
+        {% for fieldName, fieldTitle in fields %}
+            <td>{{ item[fieldName] }}</td>
+        {% endfor %}
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="{{ fields|length }}">There is no data.</td>
+    </tr>
+    {% endfor %}
+</tbody>
