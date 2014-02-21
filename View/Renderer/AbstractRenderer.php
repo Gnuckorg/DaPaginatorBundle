@@ -3,6 +3,7 @@
 namespace Da\PaginatorBundle\View\Renderer;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Pagerfanta\Pagerfanta;
 
 /**
@@ -20,19 +21,28 @@ abstract class AbstractRenderer implements RendererInterface
     private $templatingEngine;
 
     /**
+     * The translator.
+     *
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * Constructor.
      *
-     * @param EngineInterface $templatingEngine The templating engine.
+     * @param EngineInterface     $templatingEngine The templating engine.
+     * @param TranslatorInterface $translator       The translator.
      */
-    public function __construct(EngineInterface $templatingEngine)
+    public function __construct(EngineInterface $templatingEngine, TranslatorInterface $translator)
     {
         $this->templatingEngine = $templatingEngine;
+        $this->translator = $translator;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function render(Pagerfanta $content, $routeGenerator, array $fields)
+    public function render(Pagerfanta $pager, array $content, $routeGenerator, array $fields)
     {
         $paginationView = $this->getPaginationView();
 
@@ -41,6 +51,7 @@ abstract class AbstractRenderer implements RendererInterface
             array_merge(
                 $this->getAdditionnalTemplateData(),
                 array(
+                    'pager' => $pager,
                     'content' => $content,
                     'paginationView' => $paginationView,
                     'routeGenerator' => $routeGenerator,

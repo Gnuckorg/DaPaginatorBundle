@@ -151,7 +151,7 @@ class Paginator implements PaginatorInterface
      *
      * @param string $contentId The id of the content.
      */
-    protected function getContent($contentId, $viewId)
+    public function getContent($contentId, $viewId)
     {
         // Check the existence of the content.
         $this->getPager($contentId);
@@ -168,12 +168,74 @@ class Paginator implements PaginatorInterface
     }
 
     /**
+     * Set a paginated content view.
+     *
+     * @param string $contentId The id of the content.
+     * @param string $viewId    The id of the view.
+     * @param array  $content   The content.
+     */
+    public function setContent($contentId, $viewId, array $content)
+    {var_dump($content);
+        // Check the existence of the content view.
+        $this->getContent($contentId, $viewId);
+
+        $this->contents[$contentId][$viewId] = $content;
+    }
+
+    /**
+     * Set a paginated content view.
+     *
+     * @param string $contentId The id of the content.
+     * @param string $viewId    The id of the view.
+     * @param array  $index     The index of the row.
+     * @param array  $field     The field.
+     * @param array  $value     The value.
+     */
+    public function setRowContentFieldValue($contentId, $viewId, $index, $field, $value)
+    {
+        // Check the existence of the content view.
+        $content = $this->getContent($contentId, $viewId);
+
+        if (!isset($content[$index])) {
+            throw new \InvalidArgumentException(sprintf(
+                'The index "%s" does not exist for the view "%s" of the paginated content "%s".',
+                $index,
+                $viewId,
+                $contentId
+            ));
+        }
+
+        $row = $content[$index];
+
+        if (is_array($row)) {
+            $this->contents[$contentId][$viewId][$index][$field] = $value;
+        } else {
+            $class = new \ReflectionClass($row);
+            $foundProperty = false;
+
+            foreach ($class->getProperties() as $property) {
+                if ($field === $property->getName()) {
+                    $property->setAccessible(true);
+                    $property->setValue($row, $value);
+                    $foundProperty = true;
+
+                    break;
+                }
+            }
+
+            if (!$foundProperty) {
+                $row->$field = $value;
+            }
+        }
+    }
+
+    /**
      * Get a paginated content view.
      *
      * @param string $contentId The id of the content.
      * @param string $viewId    The id of the view.
      */
-    public function getContentView($contentId, $viewId)
+    protected function getContentView($contentId, $viewId)
     {
         // Check the existence of the content.
         $this->getPager($contentId);
@@ -189,21 +251,6 @@ class Paginator implements PaginatorInterface
         return $this->views[$contentId][$viewId];
     }
 
-    /**
-     * Set a paginated content view.
-     *
-     * @param string $contentId The id of the content.
-     * @param string $viewId    The id of the view.
-     * @param array  $content   The content.
-     */
-    public function setContent($contentId, $viewId, \ArrayAcces $content)
-    {
-        // Check the existence of the content view.
-        $this->getContent($contentId, $viewId);
-
-        $this->contents[$contentId][$viewId] = $content;
-    }
-
 	/**
      * {@inheritdoc}
      */
@@ -217,7 +264,7 @@ class Paginator implements PaginatorInterface
 
         $router = $this->router;
         $route = $this->request->get('_route');
-        $parameters = $this->request->query->all();
+        $parameters = array_merge($this->request->query->all(), $this->request->get('_route_params'));
         $routeGenerator = function($page) use ($router, $route, $pager, $parameters, $currentPageLabel, $maxPerPageLabel) {
             $parameters = array_merge(
                 $parameters,
@@ -244,7 +291,7 @@ class Paginator implements PaginatorInterface
 
         $router = $this->router;
         $route = $this->request->get('_route');
-        $parameters = $this->request->query->all();
+        $parameters = array_merge($this->request->query->all(), $this->request->get('_route_params'));
         $routeGenerator = function($page) use ($router, $route, $pager, $parameters, $offsetLabel, $limitLabel) {
             $parameters = array_merge(
                 $parameters,
@@ -283,6 +330,14 @@ class Paginator implements PaginatorInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countContentRows($contentId)
+    {
+        return $this->getPager($contentId)->getNbResults();
+    }
+
+    /**
      * Get a renderer.
      *
      * @param string $rendererId The id of the renderer.
@@ -308,6 +363,10 @@ class Paginator implements PaginatorInterface
         $pager = $this->getPager($contentId);
         $content = $this->getContent($contentId, $viewId);
         $fields = $this->getContentView($contentId, $viewId);
+
+        if (!is_array($content)) {
+            $content = iterator_to_array($content);
+        }
 
         return $renderer->render($pager, $content, $this->routeGenerators[$contentId], $fields);
     }

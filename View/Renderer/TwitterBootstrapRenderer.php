@@ -2,7 +2,7 @@
 
 namespace Da\PaginatorBundle\View\Renderer;
 
-use Pagerfanta\View\TwitterBootstrapView;
+use Pagerfanta\View\TwitterBootstrap3View;
 
 /**
  * Twitter bootstrap renderer.
@@ -26,6 +26,6 @@ class TwitterBootstrapRenderer extends AbstractRenderer
      */
     protected function getPaginationView()
     {
-        return new TwitterBootstrapView();
+        return new TwitterBootstrap3View();
     }
 }

@@ -1,5 +1,12 @@
-{% if content.haveToPaginate %}
-    {{ paginationView.render(content, routeGenerator)|raw }}
+{% if pager.haveToPaginate %}
+    {{ paginationView.render(
+        pager,
+        routeGenerator,
+        {
+            'prev_message': 'Previous'|trans({}, 'da_paginator'),
+            'next_message': 'Next'|trans({}, 'da_paginator')
+        }
+    )|raw }}
 {% endif %}
 
 {% block table %}
@@ -7,8 +14,15 @@
         {% include 'thead.html.twig' with {'fields': fields} %}
         {% include 'tbody.html.twig' with {'content': content, 'fields': fields} %}
     </table>
-{% block table %}
+{% endblock %}
 
-{% if content.haveToPaginate %}
-    {{ paginationView.render(content, routeGenerator)|raw }}
+{% if pager.haveToPaginate %}
+    {{ paginationView.render(
+        pager,
+        routeGenerator,
+        {
+            'prev_message': 'Previous'|trans({}, 'da_paginator'),
+            'next_message': 'Next'|trans({}, 'da_paginator')
+        }
+    )|raw }}
 {% endif %}

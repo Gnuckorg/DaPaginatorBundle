@@ -12,8 +12,4 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 interface PaginatorInterface
 {
-    /**
-     * Add a paginated content.
-     */
-    //function addPaginatedContent();
 }

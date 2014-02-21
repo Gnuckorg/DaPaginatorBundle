@@ -2,7 +2,27 @@
     {% for item in content %}
     <tr>
         {% for fieldName, fieldTitle in fields %}
-            <td>{{ item[fieldName] }}</td>
+            {% set realFieldName = fieldName %}
+            {% if fieldName|first == '_' %}
+                {% set realFieldName = fieldName|slice(1) %}
+            {% endif %}
+
+            {% set explodedFieldName = realFieldName|split('.') %}
+            {% set fieldValue = item %}
+
+            {% for field in explodedFieldName %}
+                {% if fieldValue != '' %}
+                    {% set fieldValue = attribute(fieldValue, field) is defined ? attribute(fieldValue, field) : '' %}
+                {% endif %}
+            {% endfor %}
+
+            <td>
+                {% if fieldName|first == '_' %}
+                    {{ fieldValue|raw }}
+                {% else %}
+                    {{ fieldValue }}
+                {% endif %}
+            </td>
         {% endfor %}
     </tr>
     {% else %}
