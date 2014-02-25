@@ -19,8 +19,9 @@ interface RendererInterface
      * @param array      $content        The content.
      * @param callable   $routeGenerator The generator for pages' routes.
      * @param array      $fields         The displayed fields.
+     * @param string     $macro          The import name of the optional macro.
      *
      * @return string The render.
      */
-    function render(Pagerfanta $pager, array $content, $routeGenerator, array $fields);
+    function render(Pagerfanta $pager, array $content, $routeGenerator, array $fields, $macro);
 }

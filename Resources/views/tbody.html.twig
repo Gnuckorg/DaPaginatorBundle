@@ -1,3 +1,8 @@
+{% set fieldMacros = {} %}
+{% if macro is defined and macro != '' %}
+    {% import macro as fieldMacros %}
+{% endif %}
+
 <tbody>
     {% for item in content %}
     <tr>
@@ -17,10 +22,14 @@
             {% endfor %}
 
             <td>
-                {% if fieldName|first == '_' %}
-                    {{ fieldValue|raw }}
+                {% if attribute(fieldMacros, realFieldName) is defined %}
+                    {{ attribute(fieldMacros, realFieldName, [item, fieldValue]) }}
                 {% else %}
-                    {{ fieldValue }}
+                    {% if fieldName|first == '_' %}
+                        {{ fieldValue|raw }}
+                    {% else %}
+                        {{ fieldValue }}
+                    {% endif %}
                 {% endif %}
             </td>
         {% endfor %}

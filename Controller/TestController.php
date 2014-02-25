@@ -24,18 +24,18 @@ class TestController extends ContainerAware
             'big_cities',
             'array',
             array(array(
-                array('id' => 1,  'name' => 'Madrid',    'desc' => 'none'),
-                array('id' => 2,  'name' => 'Berlin',    'desc' => 'none'),
-                array('id' => 3,  'name' => 'London',    'desc' => 'none'),
-                array('id' => 4,  'name' => 'Boston',    'desc' => 'none'),
-                array('id' => 5,  'name' => 'Chicago',   'desc' => 'none'),
-                array('id' => 6,  'name' => 'New York',  'desc' => 'none'),
-                array('id' => 7,  'name' => 'Sidney',    'desc' => 'none'),
-                array('id' => 8,  'name' => 'Paris',     'desc' => 'none'),
-                array('id' => 9,  'name' => 'Tokyo',     'desc' => 'none'),
-                array('id' => 10, 'name' => 'Hong Kong', 'desc' => 'none'),
-                array('id' => 11, 'name' => 'Pekin',     'desc' => 'none'),
-                array('id' => 12, 'name' => 'Bombay',    'desc' => 'none')
+                array('id' => 1,  'name' => 'madrid<p></p>', 'desc' => 'none'),
+                array('id' => 2,  'name' => 'berlin',        'desc' => 'none'),
+                array('id' => 3,  'name' => 'london',        'desc' => 'none'),
+                array('id' => 4,  'name' => 'boston',        'desc' => 'none'),
+                array('id' => 5,  'name' => 'chicago',       'desc' => 'none'),
+                array('id' => 6,  'name' => 'new york',      'desc' => 'none'),
+                array('id' => 7,  'name' => 'sidney',        'desc' => 'none'),
+                array('id' => 8,  'name' => 'paris',         'desc' => 'none'),
+                array('id' => 9,  'name' => 'tokyo',         'desc' => 'none'),
+                array('id' => 10, 'name' => 'hong kong',     'desc' => 'none'),
+                array('id' => 11, 'name' => 'pekin',         'desc' => 'none'),
+                array('id' => 12, 'name' => 'bombay',        'desc' => 'none')
             )),
             $skip,
             $limit,
@@ -43,7 +43,17 @@ class TestController extends ContainerAware
             'limit'
         );
 
-        $paginator->definePaginatedContentView('big_cities', 'names', array('id' => 'Id', 'name' => 'City Name'));
+        $paginator->definePaginatedContentView(
+            'big_cities',
+            'names',
+            array('id' => 'Id', 'name' => 'City Name')
+        );
+
+        $paginator->setContentFieldMacro(
+            'big_cities',
+            'names',
+            'DaPaginatorBundle:Test:macros.html.twig'
+        );
 
         return array();
     }

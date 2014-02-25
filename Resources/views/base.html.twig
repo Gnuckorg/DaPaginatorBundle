@@ -12,7 +12,7 @@
 {% block table %}
     <table class="paginated-content">
         {% include 'thead.html.twig' with {'fields': fields} %}
-        {% include 'tbody.html.twig' with {'content': content, 'fields': fields} %}
+        {% include 'tbody.html.twig' with {'content': content, 'fields': fields, 'macro': macro} %}
     </table>
 {% endblock %}
 

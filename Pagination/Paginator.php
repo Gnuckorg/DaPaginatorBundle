@@ -38,6 +38,13 @@ class Paginator implements PaginatorInterface
     private $views = array();
 
     /**
+     * The optional macros of the views for the paginated contents.
+     *
+     * @var array
+     */
+    private $macros = array();
+
+    /**
      * The route generators for the paginated contents.
      *
      * @var array
@@ -150,6 +157,7 @@ class Paginator implements PaginatorInterface
      * Get a paginated content.
      *
      * @param string $contentId The id of the content.
+     * @param string $viewId     The id of the view.
      */
     public function getContent($contentId, $viewId)
     {
@@ -175,7 +183,7 @@ class Paginator implements PaginatorInterface
      * @param array  $content   The content.
      */
     public function setContent($contentId, $viewId, array $content)
-    {var_dump($content);
+    {
         // Check the existence of the content view.
         $this->getContent($contentId, $viewId);
 
@@ -183,7 +191,44 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Set a paginated content view.
+     * Set a macro for a paginated content view.
+     *
+     * @param string $contentId  The id of the content.
+     * @param string $viewId     The id of the view.
+     * @param string $importName The name of the import of the macro.
+     */
+    public function setContentFieldMacro($contentId, $viewId, $importName)
+    {
+        // Check the existence of the content view.
+        $this->getContent($contentId, $viewId);
+
+        if (!isset($this->macros[$contentId])) {
+            $this->macros[$contentId] = array();
+        }
+
+        $this->macros[$contentId][$viewId] = $importName;
+    }
+
+    /**
+     * Get a macro for a paginated content view.
+     *
+     * @param string $contentId The id of the content.
+     * @param string $viewId    The id of the view.
+     */
+    protected function getMacro($contentId, $viewId)
+    {
+        // Check the existence of the content.
+        $this->getPager($contentId);
+
+        if (!isset($this->macros[$contentId][$viewId])) {
+            return null;
+        }
+
+        return $this->macros[$contentId][$viewId];
+    }
+
+    /**
+     * Set a the value of paginated content view row.
      *
      * @param string $contentId The id of the content.
      * @param string $viewId    The id of the view.
@@ -363,11 +408,18 @@ class Paginator implements PaginatorInterface
         $pager = $this->getPager($contentId);
         $content = $this->getContent($contentId, $viewId);
         $fields = $this->getContentView($contentId, $viewId);
+        $macro = $this->getMacro($contentId, $viewId);
 
         if (!is_array($content)) {
             $content = iterator_to_array($content);
         }
 
-        return $renderer->render($pager, $content, $this->routeGenerators[$contentId], $fields);
+        return $renderer->render(
+            $pager,
+            $content,
+            $this->routeGenerators[$contentId],
+            $fields,
+            $macro
+        );
     }
 }

@@ -42,7 +42,7 @@ abstract class AbstractRenderer implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function render(Pagerfanta $pager, array $content, $routeGenerator, array $fields)
+    public function render(Pagerfanta $pager, array $content, $routeGenerator, array $fields, $macro)
     {
         $paginationView = $this->getPaginationView();
 
@@ -55,7 +55,8 @@ abstract class AbstractRenderer implements RendererInterface
                     'content' => $content,
                     'paginationView' => $paginationView,
                     'routeGenerator' => $routeGenerator,
-                    'fields' => $fields
+                    'fields' => $fields,
+                    'macro' => $macro
                 )
             )
         );
