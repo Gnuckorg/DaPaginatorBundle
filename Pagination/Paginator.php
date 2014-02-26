@@ -95,10 +95,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Set a provider of pager adapater.
-     *
-     * @param string                        $id                   The id of the provider.
-     * @param PagerAdapterProviderInterface $pagerAdapterProvider The provider.
+     * {@inheritdoc}
      */
     public function setPagerAdapaterProvider($id, PagerAdapterProviderInterface $pagerAdapterProvider)
     {
@@ -106,10 +103,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Set a renderer.
-     *
-     * @param string            $id       The id of the renderer.
-     * @param RendererInterface $renderer The renderer.
+     * {@inheritdoc}
      */
     public function setRenderer($id, RendererInterface $renderer)
     {
@@ -154,10 +148,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Get a paginated content.
-     *
-     * @param string $contentId The id of the content.
-     * @param string $viewId     The id of the view.
+     * {@inheritdoc}
      */
     public function getContent($contentId, $viewId)
     {
@@ -176,11 +167,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Set a paginated content view.
-     *
-     * @param string $contentId The id of the content.
-     * @param string $viewId    The id of the view.
-     * @param array  $content   The content.
+     * {@inheritdoc}
      */
     public function setContent($contentId, $viewId, array $content)
     {
@@ -191,11 +178,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Set a macro for a paginated content view.
-     *
-     * @param string $contentId  The id of the content.
-     * @param string $viewId     The id of the view.
-     * @param string $importName The name of the import of the macro.
+     * {@inheritdoc}
      */
     public function setContentFieldMacro($contentId, $viewId, $importName)
     {
@@ -228,13 +211,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * Set a the value of paginated content view row.
-     *
-     * @param string $contentId The id of the content.
-     * @param string $viewId    The id of the view.
-     * @param array  $index     The index of the row.
-     * @param array  $field     The field.
-     * @param array  $value     The value.
+     * {@inheritdoc}
      */
     public function setRowContentFieldValue($contentId, $viewId, $index, $field, $value)
     {
