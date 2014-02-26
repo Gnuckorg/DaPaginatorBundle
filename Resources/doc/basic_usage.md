@@ -1,9 +1,10 @@
-Column Customization
-====================
+Basic Uusage
+============
 
-You can customize the display of a column in a simple and secure way (handle XSS, ...).
+Paginated content definition
+----------------------------
 
-Let's take the previous example:
+Let's take a simple example:
 
 ```php
 /**
@@ -47,28 +48,39 @@ public function testAction()
         array('id' => 'Id', 'name' => 'City Name')
     );
 
-    // ADDED
-    $paginator->setContentFieldMacro(
-        'big_cities',
-        'names',
-        'DaPaginatorBundle:Test:macros.html.twig'
-    );
-
     return array();
 }
 ```
 
-`setContentFieldMacro`:
+Like it is explained in the overview, you first have to define a paginated content then a view (or many) on this content.
+Here is an explanation on the argments of these two methods in this example:
+
+`defineOffsetPaginatedContent`:
+* 'big_cities' is the id of the paginated content.
+* 'array' is the id of the [adapter](adapters.md) to handle the data.
+* The third argument is the data. In fact, these are the arguments to pass to the adapter constructor in an array form.
+* '$skip' is the number of rows to skip in the data.
+* '$limit' is the number of rows to retrieve.
+* 'skip' is the name of the offset parameter in the querystring.
+* 'limit' is the name of the length parameter in the querystring.
+
+`definePaginatedContentView`:
 * 'big_cities' is the id of the paginated content.
 * 'names' is the id of the view.
-* 'DaPaginatorBundle:Test:macros.html.twig' is the logical name of the file defining macros.
+* The third argument is the an array with the name of the properties in key and the displayed names in value. You can specify non-existent keys to display additional [custom columns](column_customization.md).
 
-Here is the content of the macros' file:
+You can use a page/per_page pattern instead of the offset/length one with the method `definePerPagePaginatedContent` which works the same as `defineOffsetPaginatedContent`.
+
+Paginated content display
+-------------------------
+
+To display a paginated content, just use this method:
 
 ```twig
-{% macro name(item, value) %}
-    {{ value|title }}
-{% endmacro %}
+{{ da.paginator.renderContentView('big_cities', 'names', 'bootstrap')|raw }}
 ```
 
-The name of the macro should be the name of the column you want to customize. Here, we want to uppercase the first letters of the name of the cities. Of course, you can define as many macro as you want. This system help you to handle XSS in a Symfony standard way.
+`renderContentView`:
+* 'big_cities' is the id of the paginated content.
+* 'names' is the id of the view.
+* 'bootstrap' is the id of the [view](views.md) to use for the rendering.

@@ -6,7 +6,7 @@ This Symfony2's bundle is an helper for managing paginated contents in an easy w
 Sections
 --------
 
+- [Basic Usage](basic_usage.md)
 - [Column Customization](column_customization.md)
-- [Callbacks Usage](callbacks_usage.md)
 - [Views](views.md)
 - [Adapters](adapters.md)

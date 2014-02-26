@@ -47,6 +47,8 @@ $bundles = array(
 Usage
 -----
 
+### Paginated content definition
+
 ```php
 /**
  * @Route("/")
@@ -98,6 +100,14 @@ public function testAction()
 You can use an offset/length pattern or a page/per_page pattern and define your own labels (here skip/limit).
 
 `definePaginatedContentView` allows you to define a view on a paginated content with the columns you want to display in the rendered table.
+
+### Paginated content display
+
+```twig
+{{ da.paginator.renderContentView('big_cities', 'names', 'bootstrap')|raw }}
+```
+
+`renderContentView` allows you to render a paginated content in a fast and customized way.
 
 
 Documentation
