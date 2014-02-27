@@ -2,7 +2,8 @@
 
 namespace Da\PaginatorBundle\Pagination;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Da\PaginatorBundle\PagerAdapter\Provider\PagerAdapterProviderInterface;
+use Da\PaginatorBundle\View\Renderer\RendererInterface;
 
 /**
  * The interface that a class should implements to be
