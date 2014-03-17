@@ -53,6 +53,6 @@ class TwigPaginationExtension extends \Twig_Extension
      */
     public function getGlobals()
     {
-        return array('da' => array('paginator' => $this->getPaginator()));
+        return array('da_paginator' => $this->getPaginator());
     }
 }

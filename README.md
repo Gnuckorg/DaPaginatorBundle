@@ -104,7 +104,7 @@ You can use an offset/length pattern or a page/per_page pattern and define your 
 ### Paginated content display
 
 ```twig
-{{ da.paginator.renderContentView('big_cities', 'names', 'bootstrap')|raw }}
+{{ da_paginator.renderContentView('big_cities', 'names', 'bootstrap')|raw }}
 ```
 
 `renderContentView` allows you to render a paginated content in a fast and customized way.

@@ -54,5 +54,5 @@ services:
 To display a paginated content with it, just use this method in your twig:
 
 ```twig
-{{ da.paginator.renderContentView('big_cities', 'names', 'my_pagination')|raw }}
+{{ da_paginator.renderContentView('big_cities', 'names', 'my_pagination')|raw }}
 ```

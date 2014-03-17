@@ -77,7 +77,7 @@ Paginated content display
 To display a paginated content, just use this method:
 
 ```twig
-{{ da.paginator.renderContentView('big_cities', 'names', 'bootstrap')|raw }}
+{{ da_paginator.renderContentView('big_cities', 'names', 'bootstrap')|raw }}
 ```
 
 `renderContentView`:
