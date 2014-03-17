@@ -347,7 +347,7 @@ class Paginator implements PaginatorInterface
             }
         }
 
-        $this->contents[$contentId][$viewId] = $pager->getIterator();
+        $this->contents[$contentId][$viewId] = iterator_to_array($pager->getIterator());
         $this->views[$contentId][$viewId] = $fields;
     }
 
