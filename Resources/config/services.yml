@@ -1,11 +1,12 @@
 parameters:
     da_paginator.paginator.class: Da\PaginatorBundle\Pagination\Paginator
+    da_paginator.paginated_content.class: Da\PaginatorBundle\Pagination\PaginatedContent
     da_paginator.twig_extension.class: Da\PaginatorBundle\Pagination\TwigPaginationExtension
 
 services:
     da_paginator.paginator:
         class: %da_paginator.paginator.class%
-        arguments: [@router, @request]
+        arguments: [@router, @request, %da_paginator.paginated_content.class%]
         scope: request
 
     da_paginator.twig_extension:
