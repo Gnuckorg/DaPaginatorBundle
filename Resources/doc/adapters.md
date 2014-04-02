@@ -45,11 +45,9 @@ To use this adapter for a paginated content, do the following:
 
 ```php
 $this->container->get('da_paginator.paginator')->defineOffsetPaginatedContent(
-    'big_cities',
+    array('id' => 'Id', 'name' => 'City Name'),
     'my_adapter',
     array(/* The arguments to pass to the constructor of your adapter */),
-    $skip,
-    $limit,
     'skip',
     'limit'
 );

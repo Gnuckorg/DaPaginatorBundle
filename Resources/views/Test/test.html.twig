@@ -9,6 +9,6 @@
     <body>
         <h1>Big Cities</h1>
 
-        {{ da_paginator.renderContentView('big_cities', 'names', 'bootstrap')|raw }}
+        {{ da_paginator.render(cities, 'bootstrap', 'DaPaginatorBundle:Test:macros.html.twig')|raw }}
     </body>
 </html>

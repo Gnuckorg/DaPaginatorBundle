@@ -56,14 +56,10 @@ Usage
  */
 public function testAction()
 {
-    $query = $this->container->get('request')->query;
-    $skip = $query->get('skip', 0);
-    $limit = $query->get('limit', 5);
-
     $paginator = $this->container->get('da_paginator.paginator');
 
-    $paginator->defineOffsetPaginatedContent(
-        'big_cities',
+    $paginatedContent = $paginator->defineOffsetPaginatedContent(
+        array('id' => 'Id', 'name' => 'City Name'),
         'array',
         array(array(
             array('id' => 1,  'name' => 'madrid',    'desc' => 'none'),
@@ -79,19 +75,11 @@ public function testAction()
             array('id' => 11, 'name' => 'pekin',     'desc' => 'none'),
             array('id' => 12, 'name' => 'bombay',    'desc' => 'none')
         )),
-        $skip,
-        $limit,
         'skip',
         'limit'
     );
 
-    $paginator->definePaginatedContentView(
-        'big_cities',
-        'names',
-        array('id' => 'Id', 'name' => 'City Name')
-    );
-
-    return array();
+    return array('cities' => $paginatedContent);
 }
 ```
 
@@ -99,15 +87,13 @@ public function testAction()
 
 You can use an offset/length pattern or a page/per_page pattern and define your own labels (here skip/limit).
 
-`definePaginatedContentView` allows you to define a view on a paginated content with the columns you want to display in the rendered table.
-
 ### Paginated content display
 
 ```twig
-{{ da_paginator.renderContentView('big_cities', 'names', 'bootstrap')|raw }}
+{{ da_paginator.render(cities, 'bootstrap')|raw }}
 ```
 
-`renderContentView` allows you to render a paginated content in a fast and customized way.
+`render` allows you to render a paginated content in a fast and customized way.
 
 
 Documentation

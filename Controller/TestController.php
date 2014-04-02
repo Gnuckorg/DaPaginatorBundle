@@ -14,14 +14,10 @@ class TestController extends ContainerAware
      */
     public function testAction()
     {
-        $query = $this->container->get('request')->query;
-        $skip = $query->get('skip', 0);
-        $limit = $query->get('limit', 5);
-
         $paginator = $this->container->get('da_paginator.paginator');
 
-        $paginator->defineOffsetPaginatedContent(
-            'big_cities',
+        $cities = $paginator->defineOffsetPaginatedContent(
+            array('id' => 'Id', 'name' => 'City Name'),
             'array',
             array(array(
                 array('id' => 1,  'name' => 'madrid<p></p>', 'desc' => 'none'),
@@ -37,24 +33,10 @@ class TestController extends ContainerAware
                 array('id' => 11, 'name' => 'pekin',         'desc' => 'none'),
                 array('id' => 12, 'name' => 'bombay',        'desc' => 'none')
             )),
-            $skip,
-            $limit,
             'skip',
             'limit'
         );
 
-        $paginator->definePaginatedContentView(
-            'big_cities',
-            'names',
-            array('id' => 'Id', 'name' => 'City Name')
-        );
-
-        $paginator->setContentFieldMacro(
-            'big_cities',
-            'names',
-            'DaPaginatorBundle:Test:macros.html.twig'
-        );
-
-        return array();
+        return array('cities' => $cities);
     }
 }

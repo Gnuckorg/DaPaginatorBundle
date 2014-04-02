@@ -12,14 +12,10 @@ Let's take the previous example:
  */
 public function testAction()
 {
-    $query = $this->container->get('request')->query;
-    $skip = $query->get('skip', 0);
-    $limit = $query->get('limit', 5);
-
     $paginator = $this->container->get('da_paginator.paginator');
 
-    $paginator->defineOffsetPaginatedContent(
-        'big_cities',
+    $paginatedContent = $paginator->defineOffsetPaginatedContent(
+        array('id' => 'Id', 'name' => 'City Name'),
         'array',
         array(array(
             array('id' => 1,  'name' => 'madrid',    'desc' => 'none'),
@@ -35,35 +31,22 @@ public function testAction()
             array('id' => 11, 'name' => 'pekin',     'desc' => 'none'),
             array('id' => 12, 'name' => 'bombay',    'desc' => 'none')
         )),
-        $skip,
-        $limit,
         'skip',
         'limit'
     );
 
-    $paginator->definePaginatedContentView(
-        'big_cities',
-        'names',
-        array('id' => 'Id', 'name' => 'City Name')
-    );
-
-    // ADDED
-    $paginator->setContentFieldMacro(
-        'big_cities',
-        'names',
-        'DaPaginatorBundle:Test:macros.html.twig'
-    );
-
-    return array();
+    return array('cities' => $paginatedContent);
 }
 ```
 
-`setContentFieldMacro`:
-* 'big_cities' is the id of the paginated content.
-* 'names' is the id of the view.
-* 'DaPaginatorBundle:Test:macros.html.twig' is the logical name of the file defining macros.
+Nothing change here.
 
-Here is the content of the macros' file:
+```twig
+{{ da_paginator.render(cities, 'bootstrap', 'DaPaginatorBundle:Test:macros.html.twig')|raw }}
+```
+
+When you call the rendering method, you can give a macro path like this one.
+Here is the example of the content of this file:
 
 ```twig
 {% macro name(item, value) %}
@@ -71,4 +54,4 @@ Here is the content of the macros' file:
 {% endmacro %}
 ```
 
-The name of the macro should be the name of the column you want to customize. Here, we want to uppercase the first letters of the name of the cities. Of course, you can define as many macro as you want. This system help you to handle XSS in a Symfony standard way.
+The name of the macro should be the name of the field/column to customize. Here, it will uppercase the first letters of the name of the cities. Of course, it is possible to define as many macro as needed. This system help you to handle XSS in a Symfony standard way.
