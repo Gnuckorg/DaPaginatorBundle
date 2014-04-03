@@ -76,7 +76,7 @@ class PaginatedContent implements PaginatedContentInterface
     public function setOffsetLimit($offset, $limit)
     {
         $this->offset = $offset;
-        $this->limit = min(1, $limit);
+        $this->limit = max(1, $limit);
 
         return $this;
     }
@@ -103,7 +103,7 @@ class PaginatedContent implements PaginatedContentInterface
     public function setPagePerPage($page, $perPage)
     {
         $this->limit = $perPage;
-        $this->offset = (min(1, $page) - 1) * $perPage; 
+        $this->offset = (max(1, $page) - 1) * $perPage;
 
         return $this;
     }

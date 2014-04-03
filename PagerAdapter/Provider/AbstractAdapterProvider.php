@@ -12,7 +12,7 @@ abstract class AbstractAdapterProvider implements PagerAdapterProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function create(array $arguments = array())
+    public function create(array $arguments = array(), $offsetLabel, $limitLabel, $isPerPagePattern)
     {
         $class = new \ReflectionClass($this->getAdapterClassName());
 

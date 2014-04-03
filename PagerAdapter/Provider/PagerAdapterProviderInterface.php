@@ -13,9 +13,12 @@ interface PagerAdapterProviderInterface
     /**
      * Create a new adapter.
      *
-     * @param array $arguments The arguments for the constructor of the adapter.
+     * @param array   $arguments        The arguments for the constructor of the adapter.
+     * @param string  $offsetLabel      The label for the pagination offset.
+     * @param string  $limitLabel       The label for the pagination limit.
+     * @param boolean $isPerPagePattern Whether or not it is a per page pattern (not an offset limit one).
      *
      * @return \Pagerfanta\Adapter\AdapterInterface The adapter.
      */
-    function create(array $arguments = array());
+    function create(array $arguments = array(), $offsetLabel, $limitLabel, $isPerPagePattern);
 }

@@ -81,7 +81,13 @@ class Paginator implements PaginatorInterface
      * @param string $pagerAdapterId        The id of the pager adapter.
      * @param array  $pagerAdapterArguments The arguments for the pager adapter creation.
      */
-    protected function createPagerAdapter($pagerAdapterId, array $pagerAdapterArguments = array())
+    protected function createPagerAdapter(
+        $pagerAdapterId,
+        array $pagerAdapterArguments,
+        $offsetLabel,
+        $limitLabel,
+        $isPerPagePattern = false
+    )
     {
         if (!isset($this->pagerAdapterProviders[$pagerAdapterId])) {
             throw new \InvalidArgumentException(sprintf(
@@ -91,7 +97,7 @@ class Paginator implements PaginatorInterface
         }
 
         return $this->pagerAdapterProviders[$pagerAdapterId]
-            ->create($pagerAdapterArguments)
+            ->create($pagerAdapterArguments, $offsetLabel, $limitLabel, $isPerPagePattern)
         ;
     }
 
@@ -138,7 +144,13 @@ class Paginator implements PaginatorInterface
         $this->checkFields($fields);
 
         // Pager definition.
-        $pagerAdapter = $this->createPagerAdapter($pagerAdapterId, $pagerAdapterArguments);
+        $pagerAdapter = $this->createPagerAdapter(
+            $pagerAdapterId,
+            $pagerAdapterArguments,
+            $currentPageLabel,
+            $maxPerPageLabel,
+            true
+        );
         $pager = new Pagerfanta($pagerAdapter);
         $pager->setMaxPerPage($maxPerPage);
         $pager->setCurrentPage($currentPage);
@@ -188,7 +200,13 @@ class Paginator implements PaginatorInterface
         $this->checkFields($fields);
 
         // Pager definition.
-        $pagerAdapter = $this->createPagerAdapter($pagerAdapterId, $pagerAdapterArguments);
+        $pagerAdapter = $this->createPagerAdapter(
+            $pagerAdapterId,
+            $pagerAdapterArguments,
+            $offsetLabel,
+            $limitLabel,
+            false
+        );
         $pager = new Pagerfanta($pagerAdapter);
         $pager->setMaxPerPage($limit);
         $pager->setCurrentPage(floor($offset / $limit) + 1);

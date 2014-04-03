@@ -1,5 +1,11 @@
 services:
     # Providers.
+    da_paginator.pager_adapter_provider.api:
+        class: Da\PaginatorBundle\PagerAdapter\Provider\ApiAdapterProvider
+        arguments: []
+        tags:
+            - { name: da_paginator.pager_adapter_provider, id: api }
+
     da_paginator.pager_adapter_provider.advanced_callback:
         class: Da\PaginatorBundle\PagerAdapter\Provider\AdvancedCallbackAdapterProvider
         arguments: []
