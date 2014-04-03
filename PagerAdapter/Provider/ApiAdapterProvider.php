@@ -37,7 +37,7 @@ class ApiAdapterProvider implements PagerAdapterProviderInterface
         $adapter
             ->setApiClient($this->apiClients[$apiName])
             ->setParameters($offsetLabel, $limitLabel, $isPerPagePattern)
-        }
+        ;
 
         return $adapter;
     }
