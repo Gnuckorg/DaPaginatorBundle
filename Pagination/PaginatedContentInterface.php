@@ -12,6 +12,13 @@ use Pagerfanta\Pagerfanta;
  */
 interface PaginatedContentInterface extends \IteratorAggregate
 {
+    /**
+     * Get the number of results.
+     *
+     * @return integer The number of results.
+     */
+    function getNbResults();
+
 	/**
      * Get the offset.
      *

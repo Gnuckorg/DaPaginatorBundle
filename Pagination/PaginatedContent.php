@@ -57,6 +57,14 @@ class PaginatedContent implements PaginatedContentInterface
     /**
      * {@inheritdoc}
      */
+    public function getNbResults()
+    {
+        return $this->pager->getNbResults();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getOffset()
     {
         return $this->offset;
